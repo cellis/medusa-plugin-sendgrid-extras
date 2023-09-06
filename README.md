@@ -26,7 +26,7 @@ For sending `extra` data, see the configuration below.
 1\. Run the following command in the directory of the Medusa backend:
 
   ```bash
-  npm install medusa-plugin-sendgrid-extra
+  npm install medusa-plugin-sendgrid-extras
   ```
 
 2\. Set the following environment variable in `.env`:
@@ -44,7 +44,7 @@ For sending `extra` data, see the configuration below.
   const plugins = [
     // ...,
     {
-      resolve: `medusa-plugin-sendgrid-extra`,
+      resolve: `medusa-plugin-sendgrid-extras`,
       options: {
         api_key: process.env.SENDGRID_API_KEY,
         from: process.env.SENDGRID_FROM,
