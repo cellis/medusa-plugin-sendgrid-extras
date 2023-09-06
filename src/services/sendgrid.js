@@ -104,71 +104,46 @@ class SendGridService extends NotificationService {
   }
 
   async fetchData(event, eventData, attachmentGenerator) {
-    const extraGenerator = this.options_.extras[event];
-
+    
     let data = {};
 
     switch (event) {
       case "order.return_requested":
-        data = this.returnRequestedData(eventData, attachmentGenerator)
-        break;
+        return this.returnRequestedData(eventData, attachmentGenerator)
       case "swap.shipment_created":
-        data = this.swapShipmentCreatedData(eventData, attachmentGenerator)
-        break;
+        return this.swapShipmentCreatedData(eventData, attachmentGenerator)
       case "claim.shipment_created":
-        data = this.claimShipmentCreatedData(eventData, attachmentGenerator)
-        break;
+        return this.claimShipmentCreatedData(eventData, attachmentGenerator)
       case "order.items_returned":
-        data = this.itemsReturnedData(eventData, attachmentGenerator)
-        break;
+        return this.itemsReturnedData(eventData, attachmentGenerator)
       case "swap.received":
-        data = this.swapReceivedData(eventData, attachmentGenerator)
-        break;
+        return this.swapReceivedData(eventData, attachmentGenerator)
       case "swap.created":
-        data = this.swapCreatedData(eventData, attachmentGenerator)
-        break;
+        return this.swapCreatedData(eventData, attachmentGenerator)
       case "gift_card.created":
-        data = this.gcCreatedData(eventData, attachmentGenerator)
-        break;
+        return this.gcCreatedData(eventData, attachmentGenerator)
       case "order.gift_card_created":
-        data = this.gcCreatedData(eventData, attachmentGenerator)
-        break;
+        return this.gcCreatedData(eventData, attachmentGenerator)
       case "order.placed":
-        data = this.orderPlacedData(eventData, attachmentGenerator)
-        break;
+        return this.orderPlacedData(eventData, attachmentGenerator)
       case "order.shipment_created":
-        data = this.orderShipmentCreatedData(eventData, attachmentGenerator)
-        break;
+        return this.orderShipmentCreatedData(eventData, attachmentGenerator)
       case "order.canceled":
-        data = this.orderCanceledData(eventData, attachmentGenerator)
-        break;
+        return this.orderCanceledData(eventData, attachmentGenerator)
       case "user.password_reset":
-        data = this.userPasswordResetData(eventData, attachmentGenerator)
-        break;
+        return this.userPasswordResetData(eventData, attachmentGenerator)
       case "customer.password_reset":
-        data = this.customerPasswordResetData(eventData, attachmentGenerator)
-        break;
+        return this.customerPasswordResetData(eventData, attachmentGenerator)
       case "restock-notification.restocked":
-        data = await this.restockNotificationData(
+        return this.restockNotificationData(
           eventData,
           attachmentGenerator
         );
-        break;
       case "order.refund_created":
-        data = this.orderRefundCreatedData(eventData, attachmentGenerator)
-        break;
+        return this.orderRefundCreatedData(eventData, attachmentGenerator)
       default:
-        return data;
+        return {};
     }
-
-    if (extraGenerator) {
-      data = {
-        ...data,
-        ...extraGenerator(eventData, data),
-      };
-    }
-
-    return data;
   }
 
   getLocalizedTemplateId(event, locale) {
@@ -250,7 +225,16 @@ class SendGridService extends NotificationService {
   }
 
   async sendNotification(event, eventData, attachmentGenerator) {
-    const data = await this.fetchData(event, eventData, attachmentGenerator)
+    let data = await this.fetchData(event, eventData, attachmentGenerator);
+
+    if (extraGenerator) {
+      data = {
+        ...data,
+        ...extraGenerator(eventData, data),
+      };
+    }
+
+    const extraGenerator = this.options_.extras[event];
 
     let templateId = this.getTemplateId(event)
 
