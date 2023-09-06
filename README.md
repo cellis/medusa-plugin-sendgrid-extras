@@ -52,7 +52,7 @@ For sending `extra` data, see the configuration below.
           // Each function takes an event, and the transformed data
           // returns whatever extra data you want to send to the 
           // dynamic template.
-          // Note that any data returned in this will overwrite the transformedEvent data
+          // Note that any keys returned in this object will overwrite keys in `transformedEvent` data
           "order.placed": function orderPlacedExtra(event, transformedEvent) {
             return {
               foo: 'bar'
