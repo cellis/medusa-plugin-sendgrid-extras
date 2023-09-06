@@ -226,6 +226,7 @@ class SendGridService extends NotificationService {
 
   async sendNotification(event, eventData, attachmentGenerator) {
     let data = await this.fetchData(event, eventData, attachmentGenerator);
+    const extraGenerator = this.options_.extras[event];
 
     if (extraGenerator) {
       data = {
@@ -233,8 +234,6 @@ class SendGridService extends NotificationService {
         ...extraGenerator(eventData, data),
       };
     }
-
-    const extraGenerator = this.options_.extras[event];
 
     let templateId = this.getTemplateId(event)
 
