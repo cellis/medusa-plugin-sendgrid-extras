@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-sendgrid-extras",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "SendGrid transactional emails with extra data",
   "main": "index.js",
   "repository": {
